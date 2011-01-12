@@ -63,7 +63,7 @@ test("escaping expressions", function() {
  shouldCompileTo("{{{awesome}}}", {awesome: "&\"\\<>"}, '&\"\\<>',
         "expressions with 3 handlebars aren't escaped");
 
- shouldCompileTo("{{awesome}}", {awesome: "&\"\\<>"}, '&amp;\"\\\\&lt;&gt;',
+ shouldCompileTo("{{awesome}}", {awesome: "&\"\\<>"}, '&amp;&quot;\\\\&lt;&gt;',
         "by default expressions should be escaped");
 
  shouldCompileTo("{{&awesome}}", {awesome: "&\"\\<>"}, '&\"\\<>',
@@ -407,7 +407,7 @@ test("escaping a String is possible", function(){
   var string   = 'Message: {{hello "\\"world\\""}}';
   var hash     = {}
   var fallback = {hello: function(param) { return "Hello " + param; }}
-  shouldCompileTo(string, [hash, fallback], "Message: Hello \"world\"", "template with an escaped String literal");
+  shouldCompileTo(string, [hash, fallback], "Message: Hello &quot;world&quot;", "template with an escaped String literal");
 });
 
 test("it works with ' marks", function() {
