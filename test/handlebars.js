@@ -322,6 +322,23 @@ test("block helper inverted sections", function() {
   shouldCompileTo(string, hash, "<ul><li>Alan</li><li>Yehuda</li></ul><p><em>Nobody's here</em></p>", "Not is called when block inverted section is encountered.");
 });
 
+test("nested inverted block helpers", function() {
+  function if_green(context, fn) {
+    return (context.color === 'green') ? fn(this) : '';
+  }
+  if_green.not = function (context, fn) {
+    alert(JSON.stringify(context));
+    return (context.color === 'green') ? '' : fn(this);
+  };
+
+  var template = '{{#if_green beanie}}{{#if_green beanie/propeller}}all green{{^}}yellow on green{{/if_green}}{{^}}not green{{/if_green}}';
+  var data = {
+    beanie: {color: 'green', propeller: {color: 'yellow'}},
+    if_green: if_green
+  };
+  shouldCompileTo(template, data, 'yellow on green');
+});
+
 module("fallback hash");
 
 test("providing a fallback hash", function() {
