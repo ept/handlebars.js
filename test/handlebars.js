@@ -69,6 +69,13 @@ test("escaping expressions", function() {
  shouldCompileTo("{{&awesome}}", {awesome: "&\"\\<>"}, '&\"\\<>',
         "expressions with {{& handlebars aren't escaped");
 
+ shouldCompileTo("{{{awesome}}} {{awesome}}", {awesome: "&\"\\<>"},
+        '&\"\\<> &amp;&quot;\\\\&lt;&gt;', // TODO: actually we don't want the backslash to be doubled
+        "unescaped expression followed by escaped expression");
+
+ shouldCompileTo("{{awesome}} {{{awesome}}}", {awesome: "&\"\\<>"},
+        '&amp;&quot;\\\\&lt;&gt; &\"\\<>', // TODO: actually we don't want the backslash to be doubled
+        "escaped expression followed by unescaped expression");
 });
 
 test("functions returning safestrings shouldn't be escaped", function() {
